@@ -13,6 +13,7 @@ public class CollisionHandler : MonoBehaviour
   AudioSource audioSource;
 
   bool isTransitioning = false;
+  bool isCollisionDisabbled = false;
 
   void Start()
   {
@@ -20,9 +21,26 @@ public class CollisionHandler : MonoBehaviour
     audioSource = GetComponent<AudioSource>();
   }
 
+  void Update()
+  {
+    RespondToDebugKeys(); // TODO remove before publishing game
+  }
+
+  void RespondToDebugKeys()
+  {
+    if (Input.GetKeyDown(KeyCode.L))
+    {
+      LoadNextLevel();
+    }
+    else if (Input.GetKeyDown(KeyCode.C))
+    {
+      isCollisionDisabbled = !isCollisionDisabbled;
+    }
+  }
+
   void OnCollisionEnter(Collision other)
   {
-    if (isTransitioning) return;
+    if (isTransitioning || isCollisionDisabbled) return;
 
     switch (other.gameObject.tag)
     {
